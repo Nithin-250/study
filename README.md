@@ -1,21 +1,19 @@
-# StudyGenius - AI-Powered Learning Platform 🧠✨
+# VidyaSetu - AI-Powered Learning Platform 🧠✨
 
 A comprehensive educational platform that transforms any topic into interactive flashcards, quizzes, and audio summaries. Built with React, TypeScript, and modern web technologies for an engaging gamified learning experience.
 
 ## 🌟 Features
 
 ### 🔐 Authentication
-- **Google OAuth Integration** - Secure sign-in with Google
+- **Supabase powered OAuth Integration** - Secure sign-in with Google
 - **User Onboarding** - Personalized welcome experience
 - **Profile Management** - User preferences and settings
 
 ### 📚 Study Materials
 - **Text Input** - Enter any topic or paste study content
-- **PDF Upload** - Extract content from PDF documents
-- **URL Processing** - Generate materials from web content
 - **AI-Generated Flashcards** - Smart question-answer pairs
-- **Audio Summaries** - Multi-language text-to-speech (including Hindi)
-- **Visual Flowcharts** - Topic visualization (coming soon)
+- **Audio Summaries** - Multi-language text-to-speech 
+- **Visual Flowcharts** - Topic visualization
 
 ### 🎮 Interactive Learning
 - **Flip Card Animations** - Smooth Framer Motion animations
@@ -25,7 +23,6 @@ A comprehensive educational platform that transforms any topic into interactive 
 - **Reward Animations** - Visual feedback for achievements
 
 ### 🏆 Gamification
-- **Badge System** - Bronze (10 cards), Silver (25 cards), Gold (50+ cards)
 - **Streak Tracking** - Daily learning streaks with "7-Day Streak!" rewards
 - **Points & Achievements** - Comprehensive progression system
 - **Leaderboard** - Global, weekly, and monthly rankings
@@ -33,7 +30,7 @@ A comprehensive educational platform that transforms any topic into interactive 
 
 ### 📱 Offline Capabilities
 - **IndexedDB Storage** - Local data persistence
-- **Offline Quiz Mode** - Aptitude questions with timer
+- **Offline Quiz Mode** - Aptitude questions with animations
 - **Question Shuffling** - Dynamic content variety
 - **Sync on Reconnect** - Seamless online/offline transitions
 - **Connection Status** - Real-time connectivity monitoring
