@@ -1,0 +1,60 @@
+/* Performance Optimization CSS */
+
+/* Optimize image rendering */
+img {
+  image-rendering: auto;
+  will-change: auto;
+}
+
+/* Reduce repaints for animated elements */
+.wow, .fadeIn, .fadeInLeft, .fadeInRight, .fadeInUp, .fadeInDown {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimize carousel performance */
+.owl-carousel .owl-item {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimize hover effects */
+.portfolio-item, .newsCard {
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+/* Reduce layout thrashing */
+.container-fluid {
+  contain: layout;
+}
+
+/* Optimize scroll performance */
+.scroll-to-section {
+  scroll-behavior: smooth;
+}
+
+/* Preload critical fonts */
+@font-face {
+  font-family: 'Poppins';
+  font-display: swap;
+}
+
+/* Reduce animation overhead */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide preloader faster */
+.js-preloader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
