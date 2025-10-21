@@ -1,0 +1,11 @@
+# MongoDB Configuration
+VITE_MONGODB_URI=mongodb+srv://nithinselvam333_db_user:2qlsXygjnCBsZFee@cluster0.novwquk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+# API Configuration
+VITE_API_URL=http://localhost:3001
+
+# Google OAuth (add your credentials when ready)
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+
+# Development
+VITE_PORT=5173

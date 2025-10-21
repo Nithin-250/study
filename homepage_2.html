@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>VidyaSetu - Your Learning Platform</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-digimedia-v1.css">
+    <link rel="stylesheet" href="assets/css/animated.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/performance.css">
+    
+    <!-- Tamil Language Support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      /* Tamil Language Styling */
+      .tamil-text {
+        font-family: 'Noto Sans Tamil', 'Tahoma', 'Arial Unicode MS', sans-serif;
+        font-weight: 500;
+        line-height: 1.6;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      .tamil-hero {
+        font-family: 'Noto Sans Tamil', 'Tahoma', 'Arial Unicode MS', sans-serif;
+        font-weight: 600;
+        font-size: 2.5rem;
+        line-height: 1.4;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        letter-spacing: 0.5px;
+      }
+      
+      /* Improve Tamil text in navigation */
+      .nav .tamil-nav {
+        font-family: 'Noto Sans Tamil', 'Tahoma', 'Arial Unicode MS', sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      
+      /* Better rendering for Tamil in hero section */
+      .main-banner h6.tamil-text {
+        font-family: 'Noto Sans Tamil', 'Tahoma', 'Arial Unicode MS', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #4e65ff;
+        margin-bottom: 1rem;
+      }
+      
+      /* Fix overlapping text in progress circles */
+      .progress-value {
+        position: relative;
+        z-index: 10 !important;
+        pointer-events: none;
+      }
+      
+      .progress-value div {
+        position: relative;
+        z-index: 10 !important;
+        background: white;
+        border-radius: 50%;
+        padding: 10px;
+      }
+      
+      .progress-bar {
+        z-index: 1 !important;
+      }
+      
+      /* Ensure service tab text displays properly */
+      .services .nacc .menu .thumb {
+        position: relative;
+        text-align: center;
+      }
+      
+      .services .nacc .menu .thumb .icon {
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      /* Make sure text is visible and not from image */
+      .services .nacc .menu div:nth-child(2) .thumb {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2a2a2a;
+        padding-top: 10px;
+      }
+      
+      /* Hide PDF text from aisum.png image - crop to show only icon */
+      .services .nacc .menu div:nth-child(2) .thumb .icon img {
+        height: 80px;
+        width: 80px;
+        object-fit: cover;
+        object-position: center bottom;
+      }
+      
+      /* Force hide any PDF Summarizer text */
+      .services .nacc .menu div:nth-child(2) .thumb::before,
+      .services .nacc .menu div:nth-child(2) .thumb::after {
+        display: none !important;
+        content: none !important;
+      }
+      
+      /* Ensure clean display */
+      .services .nacc .menu div:nth-child(2) .thumb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      /* Fix Tamil text overflow in navigation */
+      .header-area .main-nav .nav li a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+        display: inline-block;
+      }
+      
+      /* Adjust navigation spacing for Tamil */
+      .header-area .main-nav .nav li {
+        padding: 0 8px;
+      }
+      
+      /* Fix service menu tabs for Tamil text */
+      .services .nacc .menu div .thumb {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        text-align: center;
+      }
+      
+      /* Ensure Tamil text wraps properly */
+      .services .nacc .menu div .thumb span:not(.icon) {
+        max-width: 100%;
+        word-break: break-word;
+        hyphens: auto;
+      }
+      
+      /* Fix language switcher button overflow */
+      .language-switcher button,
+      .language-switcher a,
+      a[data-lang] {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100%;
+        padding: 8px 15px !important;
+        line-height: 1.4 !important;
+        min-height: 40px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Fix main navigation for Tamil */
+      .header-area .main-nav .nav li {
+        margin: 0 5px;
+      }
+      
+      .header-area .main-nav .nav li a {
+        padding: 10px 12px !important;
+        font-size: 14px;
+      }
+    </style>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="vendor/jquery/jquery.min.js" as="script">
+    <link rel="preload" href="assets/images/edupic.jpg" as="image">
+    <link rel="preload" href="assets/images/logo-v1.png" as="image">
+
+  </head>
+
+<body>
+
+  <script>
+  // Check if user is logged in - redirect to login if not
+  (function() {
+    const currentUser = localStorage.getItem('vidyasetu_current_user');
+    if (!currentUser) {
+      console.log('❌ No user logged in, redirecting to login page...');
+      window.location.href = 'index.html';
+    } else {
+      console.log('✅ User logged in:', JSON.parse(currentUser).name);
+    }
+  })();
+  </script>
+  
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+  
+  <script>
+  // Hide preloader faster
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      const preloader = document.getElementById('js-preloader');
+      if (preloader) {
+        preloader.classList.add('loaded');
+        setTimeout(() => preloader.style.display = 'none', 300);
+      }
+    }, 500);
+  });
+  </script>
+
+  <!-- Pre-header Starts -->
+  <div class="pre-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-sm-4 col-5">
+          <!-- User Profile Section -->
+          <div id="userProfile" style="display: flex; align-items: center; gap: 12px; padding: 5px 0; margin-top: -5px;">
+            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+              <i class="fa fa-user"></i>
+            </div>
+            <div>
+              <div id="userName" style="font-weight: 700; font-size: 16px; color: #2a2a2a; line-height: 1.2; margin-bottom: 2px;">Loading...</div>
+              <div id="userPoints" style="font-size: 13px; color: #ff6b35; font-weight: 600;">⭐ 0 Points</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-4">
+          <ul class="info">
+            <li><a href="#"><i class="fa fa-envelope"></i>VidyaSetu</a></li>
+            <li><a href="#"><i class="fa fa-phone"></i>+91 99XXXXXXXX</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-3">
+          <ul class="social-media">
+            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-google"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Pre-header End -->
+  
+  <script>
+  // Display user profile in header
+  (function() {
+    const currentUser = localStorage.getItem('vidyasetu_current_user');
+    if (currentUser) {
+      try {
+        const user = JSON.parse(currentUser);
+        document.getElementById('userName').textContent = user.name || 'User';
+        // You can add points from database later
+        document.getElementById('userPoints').textContent = '⭐ 0 Points';
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    }
+  })();
+  </script>
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="index.html" class="logo" style="font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+              VidyaSetu
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+              <li class="scroll-to-section"><a href="#about">About</a></li>
+              <li class="scroll-to-section"><a href="#services">Services</a></li>
+              <li class="scroll-to-section"><a href="#portfolio">Projects</a></li>
+              <li class="scroll-to-section"><a href="#blog">Blog</a></li>
+              <li class="scroll-to-section"><a href="#contact">Contact</a></li> 
+              <li class="scroll-to-section"><div class="border-first-button"><a href="#contact">Contact Us</a></div></li> 
+            </ul>        
+            <a class='menu-trigger'>
+                <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h6 class="tamil-text">GANS - வளர்ச்சி மற்றும் வளர்ப்பு அமைப்பு</h6>
+                    <h2>We Boost Your Skills</h2>
+                    <p>This is a professional educational platform designed to bridge the gap between learning and career growth. It provides students with access to structured learning resources, mentorship opportunities, and skill-building pathways, all in one place. The homepage acts as an engaging gateway where learners can discover courses, track their progress, and connect with guidance for their career journey </p>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="border-first-button scroll-to-section">
+                      <a href="#contact">contact us for guidance</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img src="assets/images/edupic.jpg" alt="" loading="eager">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="about" class="about section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="about-left-image  wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img src="assets/images/about-dec.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="col-lg-6 align-self-center  wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+              <div class="about-right-content">
+                <div class="section-heading">
+                  <h6>About Us</h6>
+                  <h4>Who is<em> VidyaSetu</em></h4>
+                  <div class="line-dec"></div>
+                </div>
+                <p>VidyaSetu is an interactive educational platform designed to bridge the gap between learning and career growth while addressing educational inequalities. It provides students—regardless of location or background—with curated learning resources, mentorship opportunities, and skill-building pathways. The homepage serves as an engaging gateway where learners can explore courses, track progress, and connect with guidance for their career journey. By making quality learning accessible and inclusive, VidyaSetu empowers every student to reach their full potential..</p>
+                <div class="row">
+                  <div class="col-lg-4 col-sm-4">
+                    <div class="skill-item first-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                      <div class="progress" data-percentage="100">
+                        <span class="progress-left">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <span class="progress-right">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <div class="progress-value">
+                          <div>
+                            100%<br>
+                            <span>Guidance</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-4">
+                    <div class="skill-item second-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                      <div class="progress" data-percentage="80">
+                        <span class="progress-left">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <span class="progress-right">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <div class="progress-value">
+                          <div>
+                            80%<br>
+                            <span>Learning</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-4">
+                    <div class="skill-item third-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                      <div class="progress" data-percentage="100">
+                        <span class="progress-left">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <span class="progress-right">
+                          <span class="progress-bar"></span>
+                        </span>
+                        <div class="progress-value">
+                          <div>
+                            100%<br>
+                            <span>Progress</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="services" class="services section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h6>Our Services</h6>
+            <h4>What <em>VidyaSetu</em> aims to Provide</h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="naccs">
+            <div class="grid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="menu">
+                    <div class="first-thumb active">
+                      <div class="thumb">
+                        <span class="icon"><img src="assets/images/service-icon-01.png" alt=""></span>
+                        Aptitude
+                      </div>
+                    </div>
+                    <div>
+                      <div class="thumb" style="text-align: center;">                 
+                        <span class="icon" style="font-size: 48px; color: #4e65ff; display: block; margin-bottom: 10px;"><i class="fa fa-clipboard"></i></span>
+                        <span style="display: block; font-size: 16px; font-weight: 600; color: #2a2a2a;">Topic Summarizer</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="thumb">                 
+                        <span class="icon"><img src="assets/images/mentorship.jpg" alt=""></span>
+                        Mentorship
+                      </div>
+                    </div>
+                    <div>
+                      <div class="thumb">                 
+                        <span class="icon"><img src="assets/images/analysis.png" alt=""></span>
+                        Analysis
+                      </div>
+                    </div>
+                    <div class="last-thumb">
+                      <div class="thumb">                 
+                        <span class="icon"><img src="assets/images/ngologo.png" alt=""></span>
+                        NGOs
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                <div class="col-lg-12">
+                  <ul class="nacc">
+                    <li class="active">
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-text">
+                                <h4>Aptitudes &amp; Quiz</h4>
+                                <p>Aptitude is much important factor in Desicion making and problem solving.Early start to this provides an advantage in placement sessions</p>
+                                <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized aptitude</span> <span><i class="fa fa-check"></i> Data analysis</span> <span><i class="fa fa-check"></i> SEO Analysis</span>
+                                  <span><i class="fa fa-check"></i> Direction Based Questions</span> <span><i class="fa fa-check"></i>Skill Based Questions </span> <span><i class="fa fa-check"></i> Optimized and user friendly</span></div>
+                                <p>VidyaSetu provides a platform to practice aptitude questions and quizzes to enhance your problem-solving skills and prepare for competitive exams and job interviews.</p> <button class="btn btn-primary" onclick="redirectToOfflineQuiz()" data-translate="startNow">Start Now</button>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 align-self-center">
+                              <div class="right-image">
+                                <img src="assets/images/services-image.jpg" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-text">
+                                <h4>Topic Summarizer</h4>
+                                <p>Enter any topic and get AI-powered flashcards, quizzes, and audio summaries for effective learning.</p>
+                                <div class="ticks-list"><span><i class="fa fa-check"></i> Optimized solutions</span> <span><i class="fa fa-check"></i> Data Info</span> <span><i class="fa fa-check"></i> personalized Analysis</span>
+                                  <span><i class="fa fa-check"></i>Chatbot access</span> <span><i class="fa fa-check"></i>AI guiance</span> <span><i class="fa fa-check"></i> Optimized student search</span></div>
+                                <p>Get instant flashcards, interactive quizzes, and voice summaries for any topic you want to learn.</p>
+                                <button class="btn btn-primary" onclick="loadTopicSummarizer()" data-translate="startNow">Start Now</button>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 align-self-center">
+                              <div class="right-image">
+                                <img src="assets/images/services-image-02.jpg" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-text">
+                                <h4>Support &amp; Mentorship</h4>
+                                <p>Get personalized career guidance and one-to-one counseling for every stage of your educational journey. 
+                                  From choosing the right stream after 10th/12th to college selection and post-graduation planning.</p>
+
+                                <div class="ticks-list">
+                                <span><i class="fa fa-check"></i> After 10th: Stream Selection Guidance (Science/Commerce/Arts)</span>
+                                <span><i class="fa fa-check"></i> After 12th: College & Course Selection Counseling</span>
+                                <span><i class="fa fa-check"></i> College Groups: Branch Selection & Specialization Advice</span>
+                                <span><i class="fa fa-check"></i> Post-College: Career Planning & Higher Studies</span>
+                                <span><i class="fa fa-check"></i> One-to-One Personal Counseling Sessions</span>
+                                <span><i class="fa fa-check"></i> Industry Mentors & Alumni Guidance</span>
+                                </div>
+
+                                <p>Book personalized counseling sessions to make informed decisions about your academic and career path. 
+                                   Get expert advice tailored to your interests, strengths, and goals.
+                                </p><button class="btn btn-primary" onclick="window.location.href='mentorship.html'" data-translate="startNow">Start Now</button>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 align-self-center">
+                              <div class="right-image">
+                                <img src="assets/images/services-image-03.jpg" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-text">
+                                <h4>Analysis &amp; Day Check</h4>
+                                <p>Our platform provides detailed insights into student performance, helping educators and learners track progress effectively. Analyze grades, attendance, and engagement to identify areas for improvement and growth.</p>
+                                <div class="ticks-list">
+                                <span><i class="fa fa-check"></i> Performance Tracking</span>
+                                <span><i class="fa fa-check"></i> Attendance Analysis</span>
+                                <span><i class="fa fa-check"></i> Subject-wise Insights</span>
+                                <span><i class="fa fa-check"></i> Personalized Recommendations</span>
+                                <span><i class="fa fa-check"></i> Progress Reports</span>
+                                <span><i class="fa fa-check"></i> Predictive Analytics</span>
+                              </div>
+
+                              <p>Leverage real-time data to enhance learning outcomes, identify strengths and weaknesses, and support students in achieving their academic goals efficiently.</p>
+                              <button class="btn btn-primary" onclick="window.location.href='result-analysis.html'" data-translate="startNow">Start Now</button>
+                               
+                              </div>
+                            </div>
+                            <div class="col-lg-6 align-self-center">
+                              <div class="right-image">
+                                <img src="assets/images/services-image-04.jpg" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-text">
+                                <h4>Enjoy &amp; Travel</h4>
+                                <p>
+                                At VIT Chennai, students actively contribute to society through NGO collaborations and impactful initiatives.
+                                The <strong>Sahathya Club</strong> leads with compassion, encouraging students to volunteer, support causes, and drive
+                                meaningful change in local communities.</p>
+
+                              <div class="ticks-list">
+                              <span><i class="fa fa-check"></i> Community Outreach Programs</span>
+                              <span><i class="fa fa-check"></i> Sahathya Club – Social Service Wing of VIT Chennai</span>
+                              <span><i class="fa fa-check"></i> NGO Partnerships & Volunteer Drives</span>
+                              <span><i class="fa fa-check"></i> Environmental & Sustainability Campaigns</span>
+                              <span><i class="fa fa-check"></i> Rural Education & Health Initiatives</span>
+                              <span><i class="fa fa-check"></i> Fundraising & Awareness Events</span>
+                              </div>
+                              
+                              <p>
+                               Students at VIT Chennai, through the Sahathya Club and NGO collaborations, learn the values of leadership,
+                              empathy, and social responsibility while making a lasting difference.
+                              </p>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 align-self-center">
+                              <div class="right-image">
+                                <img src="assets/images/services-image.jpg" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>          
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="free-quote" class="free-quote">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 offset-lg-4">
+          <div class="section-heading  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.3s">
+            <h6>Get Your Free Career Guidance</h6>
+            <h4>Grow With Us Now</h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-8 offset-lg-2  wow fadeIn" data-wow-duration="1s" data-wow-delay="0.8s">
+          <form id="search" action="#" method="GET">
+            <div class="row">
+              <div class="col-lg-4 col-sm-4">
+                <fieldset>
+                  <input type="web" name="web" class="website" placeholder="Your Name" autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-4 col-sm-4">
+                <fieldset>
+                  <input type="address" name="address" class="email" placeholder="Email Address..." autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-4 col-sm-4">
+                <fieldset>
+                  <button type="submit" class="main-button">Contact us now</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="courses" class="our-portfolio section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+          <h6>Free Courses</h6>
+          <h4>Explore Our <em>Learning Catalog</em></h4>
+          <div class="line-dec"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="loop owl-carousel" id="courses-carousel">
+          <!-- Dynamic course items will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br><br>
+
+<script>
+// Course data with optimized Unsplash images for better performance
+const courses = [
+  {
+    title: "CS107: C++ Programming",
+    url: "https://learn.saylor.org/course/view.php?id=107",
+    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop",
+    description: "Learn C++ fundamentals and advanced concepts"
+  },
+  {
+    title: "AI/ML Using Python",
+    url: "https://swayam.gov.in/nd2_cec20_cs06/preview",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=300&fit=crop",
+    description: "Master AI and Machine Learning with Python"
+  },
+  {
+    title: "AI Fundamentals",
+    url: "https://skillsbuild.org/learners",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop",
+    description: "Build foundation in Artificial Intelligence"
+  },
+  {
+    title: "Web Development",
+    url: "https://www.freecodecamp.org/",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
+    description: "Full-stack web development course"
+  },
+  {
+    title: "Data Science Basics",
+    url: "https://www.coursera.org/",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+    description: "Introduction to Data Science and Analytics"
+  },
+  {
+    title: "Cloud Computing",
+    url: "https://aws.amazon.com/training/",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop",
+    description: "Learn cloud platforms and services"
+  }
+];
+
+// Function to populate the carousel with course items
+const container = document.getElementById("courses-carousel");
+if (container) {
+  courses.forEach(course => {
+      const item = `
+      <div class="item">
+        <div class="portfolio-item" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="thumb" style="height: 200px; overflow: hidden;">
+            <img src="${course.image}" alt="${course.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23ddd" width="400" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="18" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3ECourse Image%3C/text%3E%3C/svg%3E'">
+          </div>
+          <div class="down-content" style="padding: 20px;">
+            <h4 style="margin-bottom: 10px; color: #333;">${course.title}</h4>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">${course.description}</p>
+            <span><a href="${course.url}" target="_blank" style="background: #4e65ff; color: white; padding: 8px 20px; border-radius: 5px; text-decoration: none; display: inline-block;">View Course</a></span>
+          </div>
+        </div>
+      </div>`;
+    container.innerHTML += item;
+  });
+  
+  // Initialize or refresh Owl Carousel after adding items
+  setTimeout(() => {
+    if (typeof $ !== 'undefined' && $.fn.owlCarousel) {
+      $('.loop').owlCarousel({
+        center: true,
+        items: 3,
+        loop: true,
+        margin: 30,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        nav: true,
+        responsive: {
+          0: {
+            items: 1
+          },
+          768: {
+            items: 2
+          },
+          1024: {
+            items: 3
+          }
+        }
+      });
+    }
+  }, 100);
+}
+</script>
+
+  <section id="blog" style="padding: 60px 20px;">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 40px;">Latest Updates</h2>
+    
+    <div id="news-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+      <!-- News will load here dynamically -->
+    </div>
+  </div>
+  </section>
+
+  <script>
+// Cache news data for better performance
+let newsCache = null;
+let newsCacheTime = null;
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
+async function loadNews() {
+  // Check cache first
+  if (newsCache && newsCacheTime && (Date.now() - newsCacheTime < CACHE_DURATION)) {
+    displayNews(newsCache);
+    return;
+  }
+
+  const rssUrl =
+    "https://news.google.com/rss/search?q=education+scholarship+skill+development&hl=en-IN&gl=IN&ceid=IN:en";
+  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(
+    rssUrl
+  )}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    
+    // Cache the data
+    newsCache = data;
+    newsCacheTime = Date.now();
+    
+    displayNews(data);
+  } catch (error) {
+    document.getElementById("news-container").innerHTML =
+      "⚠️ Failed to load news.";
+    console.error(error);
+  }
+}
+
+function displayNews(data) {
+    const newsContainer = document.getElementById("news-container");
+    newsContainer.innerHTML = ""; // clear old content
+
+    data.items.slice(0, 6).forEach((item) => {
+      // ✅ Extract image from description if exists
+      let imageUrl = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop"; // better fallback
+      const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
+      if (imgMatch && imgMatch[1]) {
+        imageUrl = imgMatch[1];
+      }
+
+      // ✅ Build with improved styling
+      const newsCard = document.createElement("div");
+      newsCard.style.cssText = `
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+      `;
+      newsCard.onmouseover = function() { this.style.transform = 'translateY(-5px)'; };
+      newsCard.onmouseout = function() { this.style.transform = 'translateY(0)'; };
+
+      newsCard.innerHTML = `
+        <div class="thumb" style="height: 200px; overflow: hidden;">
+          <a href="${item.link}" target="_blank">
+            <img src="${imageUrl}" alt="News image" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="250"%3E%3Crect fill="%234e65ff" width="400" height="250"/%3E%3Ctext fill="white" font-family="sans-serif" font-size="18" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3ENews Update%3C/text%3E%3C/svg%3E'">
+          </a>
+        </div>
+        <div class="down-content" style="padding: 20px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span class="category" style="background: #4e65ff; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px;">Live News</span>
+            <span class="date" style="color: #999; font-size: 12px;">${new Date(item.pubDate).toDateString()}</span>
+          </div>
+          <a href="${item.link}" target="_blank" style="text-decoration: none;">
+            <h4 style="color: #333; margin-bottom: 10px; line-height: 1.4; min-height: 50px;">${item.title.length > 80 ? item.title.slice(0, 80) + '...' : item.title}</h4>
+          </a>
+          <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 15px; min-height: 60px;">${item.description.replace(/<[^>]+>/g, '').slice(0, 120)}...</p>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="author" style="color: #999; font-size: 12px;">Source: Google News</span>
+            <a href="${item.link}" target="_blank" style="background: #4e65ff; color: white; padding: 8px 20px; border-radius: 5px; text-decoration: none; font-size: 14px;">Read More</a>
+          </div>
+        </div>
+      `;
+      newsContainer.appendChild(newsCard);
+    });
+}
+
+// Defer news loading until after critical content
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(loadNews, 1000); // Load news after 1 second
+  });
+} else {
+  setTimeout(loadNews, 1000);
+}
+</script>
+
+  
+
+  <div id="contact" class="contact-us section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+          <div class="section-heading wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h6>Contact Us</h6>
+            <h4>Get In Touch With Us <em>Now</em></h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+          <form id="contact" action="" method="post">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="contact-dec">
+                  <img src="assets/images/contact-dec.png" alt="">
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div id="map">
+                  <iframe src="https://maps.google.com/maps?q=12.84198,80.15493&z=15&output=embed" width="100%" height="636px" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+              </div>
+              <div class="col-lg-7">
+                <div class="fill-form">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="info-post">
+                        <div class="icon">
+                          <img src="assets/images/phone-icon.png" alt="">
+                          <a href="#">93766XXXXX</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="info-post">
+                        <div class="icon">
+                          <img src="assets/images/email-icon.png" alt="">
+                          <a href="#">VidyaSetu@email.com</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="info-post">
+                        <div class="icon">
+                          <img src="assets/images/location-icon.png" alt="">
+                          <a href="#">MG AUDI, VIT CHENNAI</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        <input type="name" name="name" id="name" placeholder="Name" autocomplete="on" required>
+                      </fieldset>
+                      <fieldset>
+                        <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required="">
+                      </fieldset>
+                      <fieldset>
+                        <input type="subject" name="subject" id="subject" placeholder="Subject" autocomplete="on">
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        <textarea name="message" type="text" class="form-control" id="message" placeholder="Message" required=""></textarea>  
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-12">
+                      <fieldset>
+                        <button type="submit" id="form-submit" class="main-button ">Send Message Now</button>
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2025 VidyaSetu Co., Ltd. All Rights Reserved. 
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts with async/defer for better performance -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="assets/js/owl-carousel.js" defer></script>
+  <script src="assets/js/animation.js" defer></script>
+  <script src="assets/js/imagesloaded.js" defer></script>
+  <script src="assets/js/custom.js" defer></script>
+  
+  <!-- Multilingual Support Scripts -->
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/language-switcher.js" defer></script>
+
+  <!-- Integration Scripts -->
+  <script>
+    // Function to redirect to offline quiz functionality
+    function redirectToOfflineQuiz() {
+      // Check if user is logged in
+      const currentUser = localStorage.getItem('vidyasetu_current_user');
+      if (!currentUser) {
+        alert('Please login first to access this feature');
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Check if we're in the React app context
+      if (window.parent && window.parent !== window) {
+        // If this is in an iframe, communicate with parent
+        window.parent.postMessage({ action: 'navigate', route: 'offline-mode' }, '*');
+      } else {
+        // If standalone, redirect to the main React app with offline mode
+        window.location.href = 'index.html#offline-mode';
+      }
+    }
+
+    // Function to redirect to topic summarizer HTML page
+    function loadTopicSummarizer() {
+      // Check if user is logged in
+      const currentUser = localStorage.getItem('vidyasetu_current_user');
+      if (!currentUser) {
+        alert('Please login first to access this feature');
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Redirect to topic-summarizer.html
+      window.location.href = 'topic-summarizer.html';
+    }
+
+    // Listen for messages from parent window (if embedded in React app)
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.action === 'navigate') {
+        // Handle navigation requests from parent
+        console.log('Navigation request:', event.data.route);
+      }
+    });
+
+    // Enhanced integration for React app
+    function initializeReactIntegration() {
+      // Check if we're running within the React app
+      const isReactApp = window.location.pathname.includes('index.html') || 
+                        document.querySelector('#root') !== null;
+      
+      if (isReactApp) {
+        // Add event listeners for React app integration
+        document.addEventListener('click', function(e) {
+          if (e.target.classList.contains('btn-primary')) {
+            const buttonText = e.target.textContent.trim();
+            if (buttonText === 'Start Now') {
+              // Determine which service based on context
+              const serviceSection = e.target.closest('.nacc');
+              if (serviceSection) {
+                const activeTab = serviceSection.querySelector('li.active');
+                if (activeTab) {
+                  const serviceTitle = activeTab.querySelector('h4').textContent;
+                  if (serviceTitle.includes('Aptitudes') || serviceTitle.includes('Quiz')) {
+                    redirectToOfflineQuiz();
+                  } else if (serviceTitle.includes('PDF') || serviceTitle.includes('Summarizer')) {
+                    redirectToTopicSummarizer();
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Initialize integration when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeReactIntegration);
+  </script>
+
+</body>
+</html>

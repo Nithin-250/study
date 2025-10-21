@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Summarizer - VidyaSetu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .flip-card {
+            perspective: 1000px;
+            height: 400px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen">
+    <script>
+    // Check authentication
+    (function() {
+        const currentUser = localStorage.getItem('vidyasetu_current_user');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+    })();
+    </script>
+
+    <!-- Header -->
+    <div class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <button onclick="window.location.href='homepage_2.html'" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </button>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Topic Summarizer
+            </h1>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Input Section -->
+    <div id="input-section" class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold mb-4">What Would You Like to Learn?</h2>
+            <p class="text-gray-600 text-lg">Enter any topic and get AI-powered flashcards and quizzes</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <textarea
+                id="topic-input"
+                placeholder="Enter any topic (e.g., 'Photosynthesis', 'Python Programming', 'World War II')..."
+                class="w-full h-32 p-4 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none resize-none text-lg"
+            ></textarea>
+            
+            <div class="mt-6 flex gap-4">
+                <button
+                    id="generate-btn"
+                    onclick="generateStudyMaterials()"
+                    class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition-all"
+                >
+                    <i class="fas fa-sparkles mr-2"></i>Generate Study Materials
+                </button>
+            </div>
+
+            <div class="mt-6">
+                <p class="text-sm text-gray-500 mb-3">Quick suggestions:</p>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="setTopic('Photosynthesis')" class="px-4 py-2 bg-gray-100 hover:bg-purple-100 rounded-full text-sm">Photosynthesis</button>
+                    <button onclick="setTopic('Python Programming')" class="px-4 py-2 bg-gray-100 hover:bg-purple-100 rounded-full text-sm">Python Programming</button>
+                    <button onclick="setTopic('World War II')" class="px-4 py-2 bg-gray-100 hover:bg-purple-100 rounded-full text-sm">World War II</button>
+                    <button onclick="setTopic('Machine Learning')" class="px-4 py-2 bg-gray-100 hover:bg-purple-100 rounded-full text-sm">Machine Learning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flashcards Section -->
+    <div id="flashcards-section" class="hidden max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold mb-4">Study Flashcards</h2>
+            <p id="card-counter" class="text-lg text-gray-600"></p>
+            
+            <!-- Audio Controls -->
+            <div class="mt-4 flex justify-center gap-4">
+                <button id="play-audio-btn" onclick="playAllAudio()" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-bold hover:from-blue-600 hover:to-purple-600">
+                    <i class="fas fa-play mr-2"></i>Play All Audio
+                </button>
+                <button id="pause-audio-btn" onclick="pauseAudio()" class="hidden px-6 py-3 bg-yellow-500 text-white rounded-lg font-bold hover:bg-yellow-600">
+                    <i class="fas fa-pause mr-2"></i>Pause
+                </button>
+                <button id="stop-audio-btn" onclick="stopAudio()" class="hidden px-6 py-3 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600">
+                    <i class="fas fa-stop mr-2"></i>Stop
+                </button>
+            </div>
+            <p id="audio-status" class="mt-2 text-sm text-gray-500"></p>
+        </div>
+
+        <div id="flashcard-container" class="flip-card mx-auto max-w-2xl">
+            <div class="flip-card-inner">
+                <div class="flip-card-front gradient-bg text-white">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold mb-6">Question</h3>
+                        <p id="question-text" class="text-xl mb-8"></p>
+                        <button onclick="flipCard()" class="px-6 py-3 bg-white/20 rounded-lg hover:bg-white/30">
+                            Show Answer
+                        </button>
+                    </div>
+                </div>
+                <div class="flip-card-back bg-white border-4 border-purple-200">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-purple-600 mb-6">Answer</h3>
+                        <p id="answer-text" class="text-lg text-gray-700 mb-6"></p>
+                        <button onclick="speakAnswer()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                            <i class="fas fa-volume-up mr-2"></i>Listen
+                        </button>
+                        <div class="flex gap-4 justify-center">
+                            <button onclick="markCorrect()" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                                ✓ Got It
+                            </button>
+                            <button onclick="markIncorrect()" class="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                ✗ Review
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-gray-600 mb-4">Progress: <span id="progress-text">0/0</span></p>
+            <div class="w-full bg-gray-200 rounded-full h-4 max-w-md mx-auto">
+                <div id="progress-bar" class="bg-gradient-to-r from-purple-600 to-pink-600 h-4 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Button -->
+    <div id="assessment-section" class="hidden max-w-4xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready for Assessment?</h2>
+            <p class="text-lg text-gray-600 mb-8">Test your knowledge with quiz questions based on the flashcards you just studied!</p>
+            <button onclick="startAssessment()" class="px-12 py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-bold text-xl hover:from-green-600 hover:to-teal-600">
+                <i class="fas fa-play mr-2"></i>Start Assessment
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz-section" class="hidden max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold mb-4">Assessment Quiz</h2>
+            <p id="quiz-counter" class="text-lg text-gray-600"></p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h3 id="quiz-question" class="text-2xl font-semibold mb-6"></h3>
+            <div id="quiz-options" class="space-y-4"></div>
+            <button id="quiz-submit" onclick="submitAnswer()" disabled class="mt-6 w-full py-4 bg-purple-600 text-white rounded-lg font-bold disabled:bg-gray-300">
+                Submit Answer
+            </button>
+            <div id="quiz-feedback" class="hidden mt-6 p-4 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="hidden max-w-4xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+            <h2 class="text-4xl font-bold mb-6">🎉 Assessment Complete!</h2>
+            <div class="text-6xl font-bold text-purple-600 mb-4" id="final-score">0/0</div>
+            <p class="text-xl text-gray-600 mb-8" id="score-message"></p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="startNewTopic()" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-bold">
+                    Study New Topic
+                </button>
+                <button onclick="reviewFlashcards()" class="px-8 py-4 bg-blue-500 text-white rounded-lg font-bold">
+                    Review Flashcards
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let studyData = null;
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedAnswer = null;
+        
+        // Audio state
+        let isPlayingAudio = false;
+        let isPaused = false;
+        let currentAudioIndex = 0;
+        let audioUtterance = null;
+
+        // API Keys
+        const TAVILY_API_KEY = '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';
+        const OPENAI_API_KEY = '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';
+
+        function setTopic(topic) {
+            document.getElementById('topic-input').value = topic;
+        }
+
+        async function generateStudyMaterials() {
+            const topic = document.getElementById('topic-input').value.trim();
+            if (!topic) {
+                alert('Please enter a topic!');
+                return;
+            }
+
+            const btn = document.getElementById('generate-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Researching with Tavily AI...';
+            btn.disabled = true;
+
+            try {
+                // Step 1: Research with Tavily
+                console.log('🔍 Step 1: Researching with Tavily...');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Researching topic...';
+                
+                const tavilyData = await fetch('https://api.tavily.com/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${TAVILY_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        query: `${topic} comprehensive facts detailed information overview`,
+                        search_depth: "advanced",
+                        include_answer: true,
+                        max_results: 10
+                    })
+                }).then(r => r.json());
+
+                console.log('✅ Tavily research complete');
+
+                // Step 2: Generate with OpenAI
+                console.log('🤖 Step 2: Generating with OpenAI...');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating flashcards with AI...';
+                
+                try {
+                    studyData = await generateWithOpenAI(topic, tavilyData);
+                    console.log('✅ OpenAI Generated:', studyData.flashcards.length, 'flashcards');
+                } catch (aiError) {
+                    console.warn('⚠️ OpenAI unavailable:', aiError.message);
+                    console.log('🔄 Using Tavily extraction (high-quality Wikipedia facts)...');
+                    studyData = extractFactsFromTavily(topic, tavilyData);
+                    console.log('✅ Tavily extraction successful');
+                }
+                console.log('✅ Total:', studyData.flashcards.length, 'flashcards and', studyData.quizQuestions.length, 'questions');
+                
+                showFlashcards();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                console.log('🔄 Using enhanced fallback...');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating content...';
+                studyData = generateFallbackContent(topic);
+                showFlashcards();
+            } finally {
+                btn.innerHTML = '<i class="fas fa-sparkles mr-2"></i>Generate Study Materials';
+                btn.disabled = false;
+            }
+        }
+
+        async function generateWithOpenAI(topic, tavilyData, retryCount = 0) {
+            // Extract research content from Tavily
+            let researchContent = tavilyData.answer || '';
+            
+            if (tavilyData.results && tavilyData.results.length > 0) {
+                tavilyData.results.slice(0, 3).forEach(result => {
+                    researchContent += `\n\n${result.title}: ${result.content.substring(0, 800)}`;
+                });
+            }
+
+            const prompt = `You are a factual content summarizer. Based on this research about "${topic}":
+
+${researchContent.substring(0, 3000)}
+
+Create 6 flashcards with PURE FACTS from the research above and 4 quiz questions.
+
+STRICT RULES:
+1. Use ONLY information from the research - NO made-up content
+2. Extract real facts, names, dates, numbers, definitions
+3. Keep answers concise and factual (2-3 sentences max)
+4. Quiz questions must test SPECIFIC facts from the flashcards
+
+Return ONLY valid JSON (no other text):
+{
+  "flashcards": [
+    {"question": "What is ${topic}?", "answer": "Exact factual definition from research"},
+    {"question": "When/where did ${topic} originate?", "answer": "Specific dates, places from research"},
+    {"question": "What are key facts about ${topic}?", "answer": "Real statistics, records from research"},
+    {"question": "Who are important figures in ${topic}?", "answer": "Actual names and achievements from research"},
+    {"question": "What are major events in ${topic}?", "answer": "Specific events with dates from research"},
+    {"question": "Current facts about ${topic}?", "answer": "Recent information from research"}
+  ],
+  "quizQuestions": [
+    {"question": "True/false statement from flashcard", "type": "true_false", "correctAnswer": 0 or 1, "explanation": "Factual explanation"},
+    {"question": "Multiple choice about specific fact", "type": "multiple_choice", "options": ["Real option", "Real option", "Real option", "Real option"], "correctAnswer": 0-3, "explanation": "Why correct"},
+    {"question": "Another true/false from flashcard", "type": "true_false", "correctAnswer": 0 or 1, "explanation": "Factual explanation"},
+    {"question": "Another multiple choice", "type": "multiple_choice", "options": ["A", "B", "C", "D"], "correctAnswer": 0-3, "explanation": "Why correct"}
+  ]
+}`;
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [{
+                            role: "user",
+                            content: prompt
+                        }],
+                        temperature: 0.5,
+                        max_tokens: 2000
+                    })
+                });
+
+                if (response.status === 429) {
+                    // Rate limit - retry with exponential backoff
+                    if (retryCount < 2) {
+                        const waitTime = (retryCount + 1) * 2000; // 2s, 4s
+                        console.log(`⏳ Rate limited. Waiting ${waitTime/1000}s before retry ${retryCount + 1}...`);
+                        await new Promise(resolve => setTimeout(resolve, waitTime));
+                        return generateWithOpenAI(topic, tavilyData, retryCount + 1);
+                    }
+                    throw new Error('429 - Rate limit exceeded after retries');
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('OpenAI Error:', errorData);
+                    throw new Error(`OpenAI API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                }
+
+                const data = await response.json();
+                const content = data.choices[0].message.content;
+                
+                console.log('🤖 OpenAI Response:', content.substring(0, 200));
+                
+                // Parse JSON response
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    const parsed = JSON.parse(jsonMatch[0]);
+                    return {
+                        topic,
+                        flashcards: parsed.flashcards || [],
+                        quizQuestions: parsed.quizQuestions || []
+                    };
+                }
+                
+                throw new Error('Failed to parse OpenAI response');
+            } catch (error) {
+                if (error.message.includes('429')) {
+                    throw new Error('429 - OpenAI rate limit. Please wait and try again or check your API quota.');
+                }
+                throw error;
+            }
+        }
+
+        function extractFactsFromTavily(topic, tavilyData) {
+            const flashcards = [];
+            const quizQuestions = [];
+            
+            console.log('📊 Extracting from Tavily...');
+            
+            // Get main answer and results
+            const mainAnswer = tavilyData.answer || '';
+            let allContent = mainAnswer + '\n\n';
+            
+            // Add content from top Wikipedia/Britannica results
+            if (tavilyData.results && tavilyData.results.length > 0) {
+                tavilyData.results.slice(0, 2).forEach(result => {
+                    allContent += result.content + '\n\n';
+                });
+            }
+            
+            // Split into clean, meaningful sentences
+            const sentences = allContent.split(/[.!?]+/)
+                .map(s => s.trim())
+                .filter(s => s.length > 50 && s.length < 300)
+                .map(s => s.endsWith('.') ? s : s + '.');
+            
+            console.log('✅ Extracted', sentences.length, 'quality sentences');
+            
+            // Create 6 diverse, topic-specific flashcards
+            if (sentences.length >= 6) {
+                // Card 1: Definition - "What is X?"
+                flashcards.push({
+                    question: `What is ${topic}?`,
+                    answer: sentences[0]
+                });
+                
+                // Card 2: Origin/History - "When/Where"
+                flashcards.push({
+                    question: `When and where did ${topic} originate?`,
+                    answer: sentences[1]
+                });
+                
+                // Card 3: Key characteristics - "How does it work"
+                flashcards.push({
+                    question: `How does ${topic} work or what are its key features?`,
+                    answer: sentences[2]
+                });
+                
+                // Card 4: Importance/Impact - "Why important"
+                flashcards.push({
+                    question: `Why is ${topic} important or significant?`,
+                    answer: sentences[3]
+                });
+                
+                // Card 5: Notable facts - "What are interesting facts"
+                flashcards.push({
+                    question: `What are some notable facts about ${topic}?`,
+                    answer: sentences[4]
+                });
+                
+                // Card 6: Current state/Modern relevance
+                if (sentences.length > 5) {
+                    flashcards.push({
+                        question: `What is the current state or modern relevance of ${topic}?`,
+                        answer: sentences[5]
+                    });
+                }
+            } else {
+                // Fallback with available sentences
+                sentences.slice(0, 6).forEach((fact, i) => {
+                    const questions = [
+                        `What is ${topic}?`,
+                        `Tell me about the history of ${topic}`,
+                        `What are the key features of ${topic}?`,
+                        `Why is ${topic} significant?`,
+                        `What are important facts about ${topic}?`,
+                        `How is ${topic} relevant today?`
+                    ];
+                    flashcards.push({
+                        question: questions[i] || `What should I know about ${topic}?`,
+                        answer: fact
+                    });
+                });
+            }
+            
+            // Create diverse quiz questions from facts
+            if (sentences.length >= 6) {
+                // 1. True/False from actual fact
+                quizQuestions.push({
+                    question: sentences[1],
+                    type: 'true_false',
+                    correctAnswer: 1,
+                    explanation: 'This is a true fact from the research.'
+                });
+                
+                // 2. Multiple choice - extract key words
+                const words = sentences[2].split(' ').filter(w => w.length > 5);
+                if (words.length >= 4) {
+                    const correctWord = words[Math.floor(words.length / 2)];
+                    const wrongWords = ['incorrect', 'false', 'wrong'];
+                    const allOptions = [correctWord, ...wrongWords];
+                    const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+                    quizQuestions.push({
+                        question: `Complete: ${sentences[2].replace(correctWord, '___')}`,
+                        type: 'multiple_choice',
+                        options: shuffledOptions,
+                        correctAnswer: shuffledOptions.indexOf(correctWord),
+                        explanation: `The correct word is "${correctWord}".`
+                    });
+                } else {
+                    quizQuestions.push({
+                        question: `Which best describes ${topic}?`,
+                        type: 'multiple_choice',
+                        options: [
+                            sentences[2].substring(0, 50) + '...',
+                            'This is incorrect',
+                            'This is false',
+                            'This is wrong'
+                        ],
+                        correctAnswer: 0,
+                        explanation: 'The first option is correct.'
+                    });
+                }
+                
+                // 3. Fill in the blank with numbers
+                const factWithNumber = sentences.find(s => /\d+/.test(s)) || sentences[3];
+                const numbers = factWithNumber.match(/\d+/g);
+                if (numbers && numbers.length > 0) {
+                    const correctNum = numbers[0];
+                    const wrongNums = [
+                        (parseInt(correctNum) + 10).toString(),
+                        (parseInt(correctNum) - 5).toString(),
+                        (parseInt(correctNum) * 2).toString()
+                    ];
+                    const allOptions = [correctNum, ...wrongNums];
+                    const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+                    quizQuestions.push({
+                        question: factWithNumber.replace(correctNum, '___'),
+                        type: 'multiple_choice',
+                        options: shuffledOptions,
+                        correctAnswer: shuffledOptions.indexOf(correctNum),
+                        explanation: `The correct number is ${correctNum}.`
+                    });
+                } else {
+                    quizQuestions.push({
+                        question: sentences[3],
+                        type: 'true_false',
+                        correctAnswer: 1,
+                        explanation: 'This is accurate information.'
+                    });
+                }
+                
+                // 4. Another True/False
+                quizQuestions.push({
+                    question: sentences[4],
+                    type: 'true_false',
+                    correctAnswer: 1,
+                    explanation: 'This is correct based on the research.'
+                });
+                
+                // 5. Comparison/Which is correct
+                quizQuestions.push({
+                    question: `Which statement about ${topic} is most accurate?`,
+                    type: 'multiple_choice',
+                    options: [
+                        sentences[5].substring(0, 70) + '...',
+                        `${topic} has no historical significance`,
+                        `${topic} is not relevant today`,
+                        `${topic} has no practical applications`
+                    ],
+                    correctAnswer: 0,
+                    explanation: 'The first option contains accurate information from research.'
+                });
+            }
+            
+            return { topic, flashcards, quizQuestions };
+        }
+
+        async function generateWithOpenAI(topic, tavilyData) {
+            // Extract research content
+            let researchContent = tavilyData.answer || '';
+            if (tavilyData.results && tavilyData.results.length > 0) {
+                tavilyData.results.slice(0, 3).forEach(result => {
+                    researchContent += `\n\n${result.title}: ${result.content}`;
+                });
+            }
+
+            const prompt = `Extract FACTUAL information from this research about "${topic}":
+
+${researchContent.substring(0, 3000)}
+
+Create 6 flashcards with REAL FACTS and 4 quiz questions using ACTUAL information from above.
+
+STRICT RULES:
+1. Use ONLY facts from the research - no generic statements
+2. Include specific names, dates, numbers, places from the content
+3. NO educational fluff like "it's important to learn" - ONLY FACTS
+4. Extract real statistics, events, people, definitions
+5. Quiz questions must test SPECIFIC facts from the flashcards
+
+Example for "Cricket":
+- "Who holds the record for most Test runs?" not "Why is cricket important?"
+- "Sachin Tendulkar scored 100 international centuries" not "Cricket builds teamwork"
+
+Return ONLY valid JSON:
+{
+  "flashcards": [
+    {"question": "What is ${topic}?", "answer": "EXACT definition/description from research"},
+    {"question": "When/where did ${topic} originate?", "answer": "SPECIFIC dates, places, people"},
+    {"question": "What are key facts about ${topic}?", "answer": "REAL statistics, records, events"},
+    {"question": "Who are important figures in ${topic}?", "answer": "ACTUAL names and achievements"},
+    {"question": "What are major events/milestones in ${topic}?", "answer": "SPECIFIC events with dates"},
+    {"question": "What are current facts about ${topic}?", "answer": "RECENT information from research"}
+  ],
+  "quizQuestions": [
+    {"question": "SPECIFIC fact as true/false", "type": "true_false", "correctAnswer": 0 or 1, "explanation": "FACTUAL explanation"},
+    {"question": "Question about SPECIFIC detail", "type": "multiple_choice", "options": ["Real option 1", "Real option 2", "Real option 3", "Real option 4"], "correctAnswer": 0-3, "explanation": "FACTUAL explanation"},
+    ...4 total with REAL facts
+  ]
+}`;
+
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{
+                        role: "user",
+                        content: prompt
+                    }],
+                    temperature: 0.7,
+                    max_tokens: 2000
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('OpenAI API failed');
+            }
+
+            const data = await response.json();
+            const content = data.choices[0].message.content;
+            
+            // Parse JSON response
+            const jsonMatch = content.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[0]);
+                return {
+                    topic,
+                    flashcards: parsed.flashcards || [],
+                    quizQuestions: parsed.quizQuestions || []
+                };
+            }
+            
+            throw new Error('Failed to parse OpenAI response');
+        }
+
+        function generateFlashcardsFromTavily(topic, tavilyData) {
+            const flashcards = [];
+            const quizQuestions = [];
+            
+            // Extract rich content from Tavily
+            const mainAnswer = tavilyData.answer || '';
+            const results = tavilyData.results || [];
+            
+            // Combine all content
+            let allContent = mainAnswer + '\n\n';
+            results.slice(0, 3).forEach(result => {
+                allContent += result.content + '\n\n';
+            });
+            
+            // Split into meaningful sentences
+            const sentences = allContent.split(/[.!?]+/)
+                .map(s => s.trim())
+                .filter(s => s.length > 30 && s.toLowerCase().includes(topic.toLowerCase()))
+                .slice(0, 10);
+            
+            console.log('📝 Extracted', sentences.length, 'relevant sentences');
+            
+            // Create diverse flashcards
+            if (sentences.length >= 6) {
+                // Flashcard 1: Definition/What is
+                flashcards.push({
+                    question: `What is ${topic}?`,
+                    answer: sentences[0] + '. ' + (sentences[1] || '')
+                });
+                
+                // Flashcard 2: Why important
+                flashcards.push({
+                    question: `Why is ${topic} important?`,
+                    answer: sentences[2] || `${topic} is significant because it plays a crucial role in understanding related concepts and has practical applications.`
+                });
+                
+                // Flashcard 3: How it works
+                flashcards.push({
+                    question: `How does ${topic} work?`,
+                    answer: sentences[3] || `${topic} operates through specific mechanisms and processes that are fundamental to its function.`
+                });
+                
+                // Flashcard 4: Key components
+                flashcards.push({
+                    question: `What are the key components or aspects of ${topic}?`,
+                    answer: sentences[4] || `${topic} consists of several important elements that work together.`
+                });
+                
+                // Flashcard 5: Applications
+                flashcards.push({
+                    question: `What are the practical applications of ${topic}?`,
+                    answer: sentences[5] || `${topic} has various real-world applications in different fields.`
+                });
+                
+                // Flashcard 6: Advanced concept
+                flashcards.push({
+                    question: `What is an advanced concept related to ${topic}?`,
+                    answer: sentences[6] || `Understanding ${topic} at a deeper level involves exploring its complex relationships and implications.`
+                });
+            } else {
+                // Fallback with better generic content
+                flashcards.push(
+                    { question: `What is ${topic}?`, answer: mainAnswer || `${topic} is an important subject with significant applications.` },
+                    { question: `Why should I learn ${topic}?`, answer: `Learning ${topic} provides valuable knowledge and skills for personal and professional growth.` },
+                    { question: `What are the fundamentals of ${topic}?`, answer: `The fundamentals include understanding core concepts, principles, and their applications.` },
+                    { question: `How is ${topic} used in real life?`, answer: `${topic} has practical applications in various industries and everyday situations.` },
+                    { question: `What skills do I gain from ${topic}?`, answer: `You gain analytical thinking, problem-solving abilities, and specialized knowledge.` },
+                    { question: `What's the future of ${topic}?`, answer: `${topic} continues to evolve with new research, innovations, and expanding applications.` }
+                );
+            }
+            
+            // Generate better quiz questions based on content
+            const facts = sentences.filter(s => s.length > 40).slice(0, 4);
+            
+            if (facts.length >= 2) {
+                // True statement from actual content
+                quizQuestions.push({
+                    question: facts[0] + '.',
+                    type: 'true_false',
+                    correctAnswer: 1,
+                    explanation: `True! This is accurate information about ${topic} from reliable sources.`
+                });
+                
+                // False statement (modified)
+                const falseFact = facts[1].replace(/is important|helps|provides|enables/gi, 'is not relevant to');
+                quizQuestions.push({
+                    question: falseFact + '.',
+                    type: 'true_false',
+                    correctAnswer: 0,
+                    explanation: `False. This statement is incorrect based on what we know about ${topic}.`
+                });
+            }
+            
+            // Add topic-specific multiple choice questions
+            quizQuestions.push({
+                question: `What is the primary focus when studying ${topic}?`,
+                type: 'multiple_choice',
+                options: [
+                    'Memorizing facts without understanding',
+                    'Understanding core concepts and their applications',
+                    'Avoiding practical examples',
+                    'Skipping fundamental principles'
+                ],
+                correctAnswer: 1,
+                explanation: `Understanding core concepts and their applications is essential for mastering ${topic}.`
+            });
+            
+            quizQuestions.push({
+                question: `Which statement best describes ${topic}?`,
+                type: 'multiple_choice',
+                options: [
+                    'It has no real-world applications',
+                    'It is a complex subject with practical importance',
+                    'It requires no study or practice',
+                    'It is outdated and irrelevant'
+                ],
+                correctAnswer: 1,
+                explanation: `${topic} is indeed a complex subject with significant practical importance and applications.`
+            });
+
+            return { topic, flashcards, quizQuestions };
+        }
+
+        function generateFallbackContent(topic) {
+            return {
+                topic,
+                flashcards: [
+                    { question: `What is ${topic}?`, answer: `${topic} is an important subject with many applications.` },
+                    { question: `Why study ${topic}?`, answer: `Studying ${topic} builds valuable knowledge and skills.` },
+                    { question: `Key concepts in ${topic}?`, answer: `${topic} includes fundamental principles and practical applications.` },
+                    { question: `How to learn ${topic}?`, answer: `Learn ${topic} through study, practice, and application.` },
+                    { question: `Benefits of ${topic}?`, answer: `${topic} provides career opportunities and personal growth.` },
+                    { question: `Future of ${topic}?`, answer: `${topic} continues to evolve with new developments.` }
+                ],
+                quizQuestions: [
+                    { question: `${topic} is worth studying.`, type: 'true_false', correctAnswer: 1, explanation: 'True!' },
+                    { question: `Best way to learn ${topic}?`, type: 'multiple_choice', options: ['Skip it', 'Study hard', 'Ignore it', 'Avoid it'], correctAnswer: 1, explanation: 'Study hard!' }
+                ]
+            };
+        }
+
+        function showFlashcards() {
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('flashcards-section').classList.remove('hidden');
+            currentCardIndex = 0;
+            showCurrentCard();
+        }
+
+        function showCurrentCard() {
+            const card = studyData.flashcards[currentCardIndex];
+            document.getElementById('question-text').textContent = card.question;
+            document.getElementById('answer-text').textContent = card.answer;
+            document.getElementById('card-counter').textContent = `Card ${currentCardIndex + 1} of ${studyData.flashcards.length}`;
+            document.getElementById('progress-text').textContent = `${currentCardIndex + 1}/${studyData.flashcards.length}`;
+            
+            const progress = ((currentCardIndex + 1) / studyData.flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            
+            isFlipped = false;
+            document.getElementById('flashcard-container').classList.remove('flipped');
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('flashcard-container').classList.toggle('flipped');
+        }
+
+        function speakAnswer() {
+            const answerText = document.getElementById('answer-text').textContent;
+            
+            // Stop any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Create speech
+            const utterance = new SpeechSynthesisUtterance(answerText);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9; // Slightly slower for clarity
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            // Speak
+            window.speechSynthesis.speak(utterance);
+            
+            console.log('🔊 Speaking:', answerText.substring(0, 50) + '...');
+        }
+
+        function playAllAudio() {
+            if (!studyData || !studyData.flashcards || studyData.flashcards.length === 0) {
+                alert('No flashcards to play!');
+                return;
+            }
+
+            isPlayingAudio = true;
+            isPaused = false;
+            currentAudioIndex = 0;
+            
+            // Update UI
+            document.getElementById('play-audio-btn').classList.add('hidden');
+            document.getElementById('pause-audio-btn').classList.remove('hidden');
+            document.getElementById('stop-audio-btn').classList.remove('hidden');
+            
+            console.log('🔊 Starting audio playback - all questions then all answers...');
+            
+            // Build full text: all questions, then all answers
+            let fullText = '';
+            
+            // Add all questions
+            studyData.flashcards.forEach((card, index) => {
+                fullText += `Question ${index + 1}: ${card.question}. `;
+            });
+            
+            // Add separator
+            fullText += 'Now, the answers. ';
+            
+            // Add all answers
+            studyData.flashcards.forEach((card, index) => {
+                fullText += `Answer ${index + 1}: ${card.answer}. `;
+            });
+            
+            document.getElementById('audio-status').textContent = `🔊 Playing all content...`;
+            
+            // Stop any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Create speech
+            audioUtterance = new SpeechSynthesisUtterance(fullText);
+            audioUtterance.lang = 'en-US';
+            audioUtterance.rate = 0.85;
+            audioUtterance.pitch = 1;
+            audioUtterance.volume = 1;
+            
+            // When finished
+            audioUtterance.onend = () => {
+                stopAudio();
+                document.getElementById('audio-status').textContent = '✅ Audio playback complete!';
+            };
+            
+            // Speak
+            window.speechSynthesis.speak(audioUtterance);
+            console.log('🔊 Speaking all questions then all answers');
+        }
+
+        function pauseAudio() {
+            if (isPlayingAudio && !isPaused) {
+                isPaused = true;
+                window.speechSynthesis.pause();
+                document.getElementById('pause-audio-btn').innerHTML = '<i class="fas fa-play mr-2"></i>Resume';
+                document.getElementById('audio-status').textContent = '⏸️ Paused';
+                console.log('⏸️ Audio paused');
+            } else if (isPaused) {
+                isPaused = false;
+                window.speechSynthesis.resume();
+                document.getElementById('pause-audio-btn').innerHTML = '<i class="fas fa-pause mr-2"></i>Pause';
+                document.getElementById('audio-status').textContent = `🔊 Playing ${currentAudioIndex + 1} of ${studyData.flashcards.length}`;
+                console.log('▶️ Audio resumed');
+            }
+        }
+
+        function stopAudio() {
+            isPlayingAudio = false;
+            isPaused = false;
+            currentAudioIndex = 0;
+            window.speechSynthesis.cancel();
+            
+            // Update UI
+            document.getElementById('play-audio-btn').classList.remove('hidden');
+            document.getElementById('pause-audio-btn').classList.add('hidden');
+            document.getElementById('stop-audio-btn').classList.add('hidden');
+            document.getElementById('pause-audio-btn').innerHTML = '<i class="fas fa-pause mr-2"></i>Pause';
+            document.getElementById('audio-status').textContent = '';
+            
+            console.log('⏹️ Audio stopped');
+        }
+
+        function markCorrect() {
+            nextCard();
+        }
+
+        function markIncorrect() {
+            nextCard();
+        }
+
+        function nextCard() {
+            if (currentCardIndex < studyData.flashcards.length - 1) {
+                currentCardIndex++;
+                showCurrentCard();
+            } else {
+                // Show assessment button
+                document.getElementById('flashcards-section').classList.add('hidden');
+                document.getElementById('assessment-section').classList.remove('hidden');
+            }
+        }
+
+        function startAssessment() {
+            document.getElementById('assessment-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.remove('hidden');
+            currentQuizIndex = 0;
+            quizScore = 0;
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            if (currentQuizIndex >= studyData.quizQuestions.length) {
+                showResults();
+                return;
+            }
+
+            const question = studyData.quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-counter').textContent = `Question ${currentQuizIndex + 1} of ${studyData.quizQuestions.length}`;
+            document.getElementById('quiz-question').textContent = question.question;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+            selectedAnswer = null;
+            document.getElementById('quiz-submit').disabled = true;
+
+            if (question.type === 'true_false') {
+                ['True', 'False'].forEach((option, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-purple-500';
+                    div.innerHTML = `<span class="text-lg">${option}</span>`;
+                    div.onclick = () => selectAnswer(index, div);
+                    optionsDiv.appendChild(div);
+                });
+            } else {
+                question.options.forEach((option, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-purple-500';
+                    div.innerHTML = `<span class="text-lg">${option}</span>`;
+                    div.onclick = () => selectAnswer(index, div);
+                    optionsDiv.appendChild(div);
+                });
+            }
+        }
+
+        function selectAnswer(index, element) {
+            document.querySelectorAll('#quiz-options > div').forEach(div => {
+                div.classList.remove('border-purple-500', 'bg-purple-50');
+            });
+            element.classList.add('border-purple-500', 'bg-purple-50');
+            selectedAnswer = index;
+            document.getElementById('quiz-submit').disabled = false;
+        }
+
+        function submitAnswer() {
+            const question = studyData.quizQuestions[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            
+            if (selectedAnswer === question.correctAnswer) {
+                quizScore++;
+                feedback.className = 'mt-6 p-4 rounded-lg bg-green-100 border-2 border-green-500';
+                feedback.innerHTML = `<p class="font-bold text-green-800">✓ Correct!</p><p class="text-green-700">${question.explanation}</p>`;
+            } else {
+                feedback.className = 'mt-6 p-4 rounded-lg bg-red-100 border-2 border-red-500';
+                feedback.innerHTML = `<p class="font-bold text-red-800">✗ Incorrect</p><p class="text-red-700">${question.explanation}</p>`;
+            }
+            
+            feedback.classList.remove('hidden');
+            document.getElementById('quiz-submit').textContent = 'Next Question';
+            document.getElementById('quiz-submit').onclick = () => {
+                currentQuizIndex++;
+                document.getElementById('quiz-submit').textContent = 'Submit Answer';
+                document.getElementById('quiz-submit').onclick = submitAnswer;
+                showQuizQuestion();
+            };
+        }
+
+        function showResults() {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            
+            const percentage = (quizScore / studyData.quizQuestions.length) * 100;
+            document.getElementById('final-score').textContent = `${quizScore}/${studyData.quizQuestions.length}`;
+            
+            let message = '';
+            if (percentage >= 80) message = 'Excellent work! You mastered this topic! 🌟';
+            else if (percentage >= 60) message = 'Good job! Keep practicing to improve! 👍';
+            else message = 'Keep studying! Review the flashcards again! 📚';
+            
+            document.getElementById('score-message').textContent = message;
+        }
+
+        function startNewTopic() {
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('input-section').classList.remove('hidden');
+            document.getElementById('topic-input').value = '';
+        }
+
+        function reviewFlashcards() {
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('flashcards-section').classList.remove('hidden');
+            currentCardIndex = 0;
+            showCurrentCard();
+        }
+    </script>
+</body>
+</html>

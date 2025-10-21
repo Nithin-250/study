@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Analysis - VidyaSetu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1a202c;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #718096;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2d3748;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #1a202c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Score Cards Grid */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .score-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .score-icon.overall { background: #3182ce; }
+        .score-icon.streak { background: #e53e3e; }
+        .score-icon.accuracy { background: #38a169; }
+        .score-icon.rank { background: #d69e2e; }
+
+        .score-card h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #2a2a2a;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .trend {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trend.up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trend.down {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Performance Section */
+        .performance-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .performance-section h2 {
+            font-size: 28px;
+            color: #2a2a2a;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .performance-section h2 i {
+            color: #667eea;
+        }
+
+        /* Subject-wise Performance */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .subject-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .subject-card h4 {
+            font-size: 18px;
+            color: #2a2a2a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .subject-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3182ce;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .subject-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Strengths & Weaknesses */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .analysis-box {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .analysis-box.strengths {
+            border-left: 5px solid #38a169;
+        }
+
+        .analysis-box.weaknesses {
+            border-left: 5px solid #e53e3e;
+        }
+
+        .analysis-box h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-box.strengths h3 { color: #2f855a; }
+        .analysis-box.weaknesses h3 { color: #c53030; }
+
+        .analysis-list {
+            list-style: none;
+        }
+
+        .analysis-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-list li:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-list li i {
+            font-size: 18px;
+        }
+
+        .strengths .analysis-list li i { color: #38a169; }
+        .weaknesses .analysis-list li i { color: #e53e3e; }
+
+        /* Improvement Suggestions */
+        .suggestions-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .suggestion-card {
+            background: #edf2f7;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3182ce;
+        }
+
+        .suggestion-card h4 {
+            font-size: 20px;
+            color: #2c5282;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .suggestion-card p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .suggestion-card ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .suggestion-card ul li {
+            padding: 8px 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .suggestion-card ul li i {
+            color: #3182ce;
+            margin-top: 5px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-btn.primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: #2d3748;
+            border: 2px solid #2d3748;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .score-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="homepage_2.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div class="header">
+            <h1>📊 Result Analysis</h1>
+            <p>Track your performance, identify strengths, and improve weak areas</p>
+        </div>
+
+        <!-- Score Cards -->
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="score-icon overall">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Overall Score</h3>
+                <div class="score-value" id="overallScore">85</div>
+                <div class="score-label">out of 100</div>
+                <div class="trend up">
+                    <i class="fas fa-arrow-up"></i> +5% from last test
+                </div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-icon streak">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3>Current Streak</h3>
+                <div class="score-value" id="streak">12</div>
+                <div class="score-label">days</div>
+                <div class="trend up">
+                    <i class="fas fa-arrow-up"></i> Keep it up!
+                </div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-icon accuracy">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Accuracy</h3>
+                <div class="score-value" id="accuracy">78</div>
+                <div class="score-label">percentage</div>
+                <div class="trend up">
+                    <i class="fas fa-arrow-up"></i> +3% improvement
+                </div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-icon rank">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Your Rank</h3>
+                <div class="score-value" id="rank">24</div>
+                <div class="score-label">out of 500 students</div>
+                <div class="trend up">
+                    <i class="fas fa-arrow-up"></i> Improved 5 ranks
+                </div>
+            </div>
+        </div>
+
+        <!-- Subject-wise Performance -->
+        <div class="performance-section">
+            <h2><i class="fas fa-chart-bar"></i> Subject-wise Performance</h2>
+            <div class="subject-grid">
+                <div class="subject-card">
+                    <h4>
+                        <span>Mathematics</span>
+                        <span class="subject-score">92%</span>
+                    </h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 92%"></div>
+                    </div>
+                    <div class="subject-stats">
+                        <span><i class="fas fa-check-circle"></i> 23/25 Correct</span>
+                        <span><i class="fas fa-clock"></i> Avg: 2.5 min/q</span>
+                    </div>
+                </div>
+
+                <div class="subject-card">
+                    <h4>
+                        <span>Science</span>
+                        <span class="subject-score">88%</span>
+                    </h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 88%"></div>
+                    </div>
+                    <div class="subject-stats">
+                        <span><i class="fas fa-check-circle"></i> 22/25 Correct</span>
+                        <span><i class="fas fa-clock"></i> Avg: 3 min/q</span>
+                    </div>
+                </div>
+
+                <div class="subject-card">
+                    <h4>
+                        <span>English</span>
+                        <span class="subject-score">75%</span>
+                    </h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <div class="subject-stats">
+                        <span><i class="fas fa-check-circle"></i> 19/25 Correct</span>
+                        <span><i class="fas fa-clock"></i> Avg: 2.8 min/q</span>
+                    </div>
+                </div>
+
+                <div class="subject-card">
+                    <h4>
+                        <span>Reasoning</span>
+                        <span class="subject-score">82%</span>
+                    </h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 82%"></div>
+                    </div>
+                    <div class="subject-stats">
+                        <span><i class="fas fa-check-circle"></i> 20/25 Correct</span>
+                        <span><i class="fas fa-clock"></i> Avg: 3.2 min/q</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strengths & Weaknesses -->
+            <div class="analysis-grid">
+                <div class="analysis-box strengths">
+                    <h3><i class="fas fa-thumbs-up"></i> Your Strengths</h3>
+                    <ul class="analysis-list">
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span><strong>Algebra & Calculus:</strong> Excellent problem-solving speed</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span><strong>Physics Concepts:</strong> Strong understanding of mechanics</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span><strong>Logical Reasoning:</strong> High accuracy in pattern recognition</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            <span><strong>Time Management:</strong> Completing tests within time limit</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="analysis-box weaknesses">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Areas to Improve</h3>
+                    <ul class="analysis-list">
+                        <li>
+                            <i class="fas fa-times-circle"></i>
+                            <span><strong>English Grammar:</strong> Needs more practice on tenses</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-times-circle"></i>
+                            <span><strong>Chemistry Equations:</strong> Balancing chemical equations</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-times-circle"></i>
+                            <span><strong>Data Interpretation:</strong> Speed needs improvement</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-times-circle"></i>
+                            <span><strong>Vocabulary:</strong> Work on synonyms and antonyms</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Chart -->
+        <div class="chart-container">
+            <h2><i class="fas fa-chart-line"></i> Performance Trend (Last 10 Tests)</h2>
+            <div class="chart-wrapper">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Improvement Suggestions -->
+        <div class="suggestions-section">
+            <h2><i class="fas fa-lightbulb"></i> Personalized Improvement Suggestions</h2>
+
+            <div class="suggestion-card">
+                <h4><i class="fas fa-book"></i> Focus on English Grammar</h4>
+                <p>Your English score is 75%, which is below your average. Focus on improving grammar and vocabulary.</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Practice 20 grammar questions daily</li>
+                    <li><i class="fas fa-check"></i> Read English newspapers to improve comprehension</li>
+                    <li><i class="fas fa-check"></i> Use flashcards for vocabulary building</li>
+                    <li><i class="fas fa-check"></i> Take weekly mock tests to track progress</li>
+                </ul>
+            </div>
+
+            <div class="suggestion-card">
+                <h4><i class="fas fa-flask"></i> Chemistry Practice Needed</h4>
+                <p>Chemical equations and balancing need more attention. Dedicate 30 minutes daily to chemistry.</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Revise periodic table and valencies</li>
+                    <li><i class="fas fa-check"></i> Practice 15 equation balancing problems daily</li>
+                    <li><i class="fas fa-check"></i> Watch video tutorials for difficult concepts</li>
+                    <li><i class="fas fa-check"></i> Create formula sheets for quick revision</li>
+                </ul>
+            </div>
+
+            <div class="suggestion-card">
+                <h4><i class="fas fa-clock"></i> Improve Speed in Data Interpretation</h4>
+                <p>You're accurate but slow in data interpretation. Work on solving problems faster.</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Practice timed DI questions (5 mins per set)</li>
+                    <li><i class="fas fa-check"></i> Learn shortcut techniques for calculations</li>
+                    <li><i class="fas fa-check"></i> Focus on graph and table reading speed</li>
+                    <li><i class="fas fa-check"></i> Take sectional tests to build speed</li>
+                </ul>
+            </div>
+
+            <div class="suggestion-card">
+                <h4><i class="fas fa-trophy"></i> Maintain Your Strengths</h4>
+                <p>Keep practicing Mathematics and Physics to maintain your excellent performance.</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Solve advanced level problems to stay sharp</li>
+                    <li><i class="fas fa-check"></i> Help peers with doubts to reinforce concepts</li>
+                    <li><i class="fas fa-check"></i> Participate in online competitions</li>
+                    <li><i class="fas fa-check"></i> Explore olympiad-level questions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn primary" onclick="window.location.href='topic-summarizer.html'">
+                <i class="fas fa-book-reader"></i> Study Weak Topics
+            </button>
+            <button class="action-btn primary" onclick="window.location.href='homepage_2.html#services'">
+                <i class="fas fa-redo"></i> Take Another Test
+            </button>
+            <button class="action-btn secondary" onclick="downloadReport()">
+                <i class="fas fa-download"></i> Download Report
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5', 'Test 6', 'Test 7', 'Test 8', 'Test 9', 'Test 10'],
+                datasets: [{
+                    label: 'Overall Score',
+                    data: [65, 70, 68, 75, 78, 80, 82, 83, 85, 85],
+                    borderColor: '#3182ce',
+                    backgroundColor: 'rgba(49, 130, 206, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 14
+                        },
+                        bodyFont: {
+                            size: 13
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Animate score values on load
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
+            
+            const timer = setInterval(function() {
+                current += increment;
+                obj.textContent = current;
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        // Animate on page load
+        window.addEventListener('load', function() {
+            animateValue('overallScore', 0, 85, 1500);
+            animateValue('streak', 0, 12, 1000);
+            animateValue('accuracy', 0, 78, 1500);
+            animateValue('rank', 0, 24, 1000);
+        });
+
+        function downloadReport() {
+            alert('📄 Downloading your detailed performance report...\n\nThe report will include:\n✅ Complete score breakdown\n✅ Subject-wise analysis\n✅ Improvement suggestions\n✅ Practice recommendations');
+            console.log('Downloading report...');
+        }
+    </script>
+</body>
+</html>
